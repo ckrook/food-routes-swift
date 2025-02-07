@@ -8,10 +8,27 @@
 import SwiftUI
 
 struct OfficeListView: View {
-    @State var offices: [Office] = []
+    @State var offices = Offices(offices: [])
     
     var body: some View {
         List {
+            ForEach(offices.offices, id: \.self.office.id) { office in
+                Text(office.office.name)
+            }
+        }
+        .onAppear(perform: fetchOffices)
+        .refreshable {
+            fetchOffices()
+        }
+    }
+    
+    func fetchOffices() {
+        Task {
+            do {
+                offices = try await NetworkingService.shared.fetchOffices()
+            } catch {
+               print(error.localizedDescription)
+            }
         }
     }
 }

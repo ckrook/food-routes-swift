@@ -45,6 +45,9 @@ struct ContentView: View {
     
     func fetchData() {
         name = "Restuarant "
+        Task {
+            try? await NetworkingService.shared.fetchOffices()
+        }
     }
 }
 
