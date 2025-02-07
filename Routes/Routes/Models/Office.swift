@@ -12,10 +12,6 @@ struct Offices: Codable {
 }
 
 struct Office: Codable {
-    let office: OfficeModel
-}
-
-struct OfficeModel: Codable {
     let id: Int
     let name: String
     let lat: Double

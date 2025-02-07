@@ -21,7 +21,7 @@ class NetworkingService {
     
     enum routes: String {
         case test = "/hello"
-        case offices = "/eidra-offices"
+        case offices = "/eidra-offices-real"
         case restaurant = "/restaurants"
     }
     

@@ -7,20 +7,33 @@
 
 import SwiftUI
 
-
 struct OfficeListView: View {
     @State var offices = Offices(offices: [])
 
     var body: some View {
         List {
-            ForEach(offices.offices, id: \.office.id) { office in
-                OfficeCard(office: office)
-                    .listRowBackground(Color.backgroundDark) // Ensure rows have the same background
+            ForEach(offices.offices, id: \.id) { office in
+                ZStack(alignment: .center) {
+                    OfficeCard(office: office)
+                    NavigationLink(destination: OfficeMapView(selectedOffice: office)) {
+                        EmptyView()
+                    }
+                    .opacity(0.0)
+                }
+                .listRowSeparator(.hidden)
+            }
+            .onAppear(perform: fetchOffices)
+            .refreshable {
+                fetchOffices()
             }
         }
+
+        .listStyle(.plain)
+//        .navigationTitle(Text("Eidra Offices"))
+        
         .scrollContentBackground(.hidden) // Hides default list background
-        .background(Color.backgroundDark) // Sets background for entire view
-        .ignoresSafeArea() // Extends background to edges
+//        .background(Color.backgroundDark) // Sets background for entire view
+//        .ignoresSafeArea() // Extends background to edges
         .onAppear(perform: fetchOffices)
         .refreshable {
             fetchOffices()
@@ -60,16 +73,16 @@ struct OfficeCard: View {
                         .fill(randomColor) // Uses the random color
                         .frame(width: 10, height: 10)
                     
-                    Text(office.office.name)
+                    Text(office.name)
                         .font(.headline)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                 }
                 
                 HStack(spacing: 20) {
-                    CardStats(title: "Street", value: office.office.addressline1 ?? "Unknown")
-                    CardStats(title: "City", value: office.office.addressline2 ?? "Unknown")
-                    CardStats(title: "Zip", value: office.office.name ?? "Unknown")
+                    CardStats(title: "Street", value: office.addressline1 ?? "Unknown")
+                    CardStats(title: "City", value: office.addressline2 ?? "Unknown")
+                    CardStats(title: "Zip", value: office.name ?? "Unknown")
                 }
             }
             Spacer()

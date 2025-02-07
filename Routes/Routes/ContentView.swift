@@ -12,62 +12,14 @@ struct ContentView: View {
     @State var name: String = "Test"
     
     var body: some View {
-        NavigationView {
-            
-            List {
-                Text("Hello, World!")
-                Text("Hello, World!")
-            }
-            
-            
-            
-            
-            VStack {
-                HeaderView()
-                
-                Image(systemName: "globe")
-                    .imageScale(.large)
-                    .foregroundStyle(.tint)
-                Text(name)
-            }
-            .padding()
-    //        .onAppear(perform: fetchData)
-//            .refreshable {
-//                fetchData()
-//            }
+        NavigationStack {
+            OfficeListView()
+                .navigationTitle(Text("Offices"))
         }
-        .refreshable {
-            fetchData()
-        }
-        .navigationTitle(Text("Title"))
-        
-    }
-    
-    func fetchData() {
-        name = "Restuarant "
-        Task {
-            try? await NetworkingService.shared.fetchOffices()
-        }
+        .preferredColorScheme(.dark)
     }
 }
 
 #Preview {
     ContentView()
-}
-
-struct HeaderView: View {
-    var body: some View {
-        HStack {
-            Image(systemName: "arrow.up.circle")
-            Image(systemName: "arrow.up.circle")
-            Image(systemName: "arrow.up.circle")
-            Image(systemName: "arrow.up.circle")
-            Image(systemName: "arrow.up.circle")
-            Image(systemName: "arrow.up.circle")
-            Image(systemName: "arrow.up.circle")
-            
-            
-        }
-        .padding()
-    }
 }
