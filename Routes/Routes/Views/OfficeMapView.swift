@@ -10,7 +10,7 @@ import MapKit
 
 struct OfficeMapView: View {
     @State var selectedOffice: Office?
-    @State var restaurants = [Restaurant]()
+    @State var restaurants = RestaurantModel(restaurants: [])
     
     var body: some View {
         VStack {
@@ -23,19 +23,32 @@ struct OfficeMapView: View {
                                         .frame(width: 30, height: 30)
                                 }
                             }
+                
+                ForEach(restaurants.restaurants, id: \.name) { restaurant in
+                    
+                    Marker(restaurant.name, coordinate: CLLocationCoordinate2D(latitude: restaurant.lat, longitude: restaurant.long))
+                }
+            }
+            
+            List {
+                ForEach(restaurants.restaurants, id: \.name) { restaurant in
+                    Text(restaurant.name)
+                }
             }
 
         }
         .navigationTitle(selectedOffice?.name ?? "")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            
-        }
+        .onAppear(perform: fetchRestaurants)
     }
     
     func fetchRestaurants() {
         Task {
-            
+            do {
+                restaurants = try await NetworkingService.shared.fetchRestaurants(officeId: self.selectedOffice?.id ?? 0)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 }

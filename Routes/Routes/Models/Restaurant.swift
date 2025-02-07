@@ -7,14 +7,22 @@
 
 import Foundation
 
+struct RestaurantModel: Codable {
+    let restaurants: [Restaurant]
+}
+
 struct Restaurant: Codable {
-    let id: Int
+    let id: Int?
     let name: String
-    let cuisine: String
-    let rating: Double
-    let contactInfo: ContactInfo
-    let location: Location
-    let details: RestaurantDetails
+    let rating: String
+    let lat: Double
+    let long: Double
+    let priceLevel: Double?
+    
+    let cuisine: String?
+    let contactInfo: ContactInfo?
+//    let location: Location
+    let details: RestaurantDetails?
     let options: RestaurantOptions?
     let reviews: [Review]?
 }

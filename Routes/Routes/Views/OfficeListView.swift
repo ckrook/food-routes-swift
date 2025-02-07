@@ -27,13 +27,9 @@ struct OfficeListView: View {
                 fetchOffices()
             }
         }
-
         .listStyle(.plain)
-//        .navigationTitle(Text("Eidra Offices"))
-        
         .scrollContentBackground(.hidden) // Hides default list background
 //        .background(Color.backgroundDark) // Sets background for entire view
-//        .ignoresSafeArea() // Extends background to edges
         .onAppear(perform: fetchOffices)
         .refreshable {
             fetchOffices()

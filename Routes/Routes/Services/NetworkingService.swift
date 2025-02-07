@@ -22,7 +22,7 @@ class NetworkingService {
     enum routes: String {
         case test = "/hello"
         case offices = "/eidra-offices-real"
-        case restaurant = "/restaurants"
+        case restaurants = "/restaurants"
     }
     
     private init() {}
@@ -38,5 +38,12 @@ class NetworkingService {
         guard let url = URL(string: "\(baseURL)\(routes.offices.rawValue)") else { throw NetworkingError.invalidURL }
         let (data, _) = try await URLSession.shared.data(from: url)
         return try JSONDecoder().decode(Offices.self, from: data)
-    }  
+    }
+    
+    func fetchRestaurants(officeId: Int) async throws -> RestaurantModel {
+        guard let url = URL(string: "\(baseURL)\(routes.restaurants.rawValue)/\(officeId)") else { throw NetworkingError.invalidURL }
+        print("URL: \(url)")
+        let (data, _) = try await URLSession.shared.data(from: url)
+        return try JSONDecoder().decode(RestaurantModel.self, from: data)
+    }
 }
