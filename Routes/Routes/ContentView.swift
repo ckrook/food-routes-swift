@@ -8,13 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    @State var name: String = "Test"
-    
+        
     var body: some View {
         NavigationStack {
             OfficeListView()
-                .navigationTitle(Text("Offices"))
+                .navigationTitle("Offices")
         }
         .preferredColorScheme(.dark)
     }

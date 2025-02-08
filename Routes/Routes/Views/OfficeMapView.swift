@@ -11,7 +11,7 @@ import MapKit
 struct OfficeMapView: View {
     @State var selectedOffice: Office?
     @State var restaurants = RestaurantModel(restaurants: [])
-    @State private var selection: Int?
+    @State private var selection: MKMapItem?
 
     
     @State var selectedRestaurant: Restaurant?
@@ -27,18 +27,22 @@ struct OfficeMapView: View {
                                         .resizable()
                                         .frame(width: 30, height: 30)
                                 }
-                                .onTapGesture {
-                                    self.isPresented.toggle()
-                                    selectedRestaurant = restaurants.restaurants.first
-                                    
-                                }
                 }
                 
                 ForEach(restaurants.restaurants, id: \.name) { restaurant in
-                    Marker(coordinate: CLLocationCoordinate2D(latitude: restaurant.lat, longitude: restaurant.long)) {
-                        Label(restaurant.name, systemImage: "fork.knife.circle.fill")
+                    
+                    Annotation(restaurant.name, coordinate: CLLocationCoordinate2D(latitude: restaurant.lat, longitude: restaurant.long)) {
+                        
+                                    ZStack {
+                                        Image(systemName: "fork.knife.circle.fill")
+                                            .resizable()
+                                            .frame(width: 30, height: 30)
+                                            .foregroundStyle(Color.red)
+                                    }
+                                    .onTapGesture {
+                                        selectedRestaurant = restaurant
+                                    }
                     }
-                    .tag(restaurant.name)
                 }
             }
             
@@ -54,11 +58,10 @@ struct OfficeMapView: View {
         .navigationTitle(selectedOffice?.name ?? "")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear(perform: fetchRestaurants)
-        .sheet(isPresented: $isPresented) {
-            RestaurantDetailsView()
-                .presentationDetents([.medium, .large])
+        .sheet(item: $selectedRestaurant) { restaurant in
+            RestaurantDetailsView(restaurant: restaurant)
+                    .presentationDetents([.medium, .large])
         }
-        
     }
     
     func fetchRestaurants() {

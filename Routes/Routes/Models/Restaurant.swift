@@ -11,20 +11,49 @@ struct RestaurantModel: Codable {
     let restaurants: [Restaurant]
 }
 
-struct Restaurant: Codable {
-    let id: Int?
+struct Restaurant: Codable, Identifiable {
+    let id: String = UUID().uuidString
     let name: String
-    let rating: String
+    let rating: Double?
+    let totalRatings: Int?
     let lat: Double
     let long: Double
-    let priceLevel: Double?
+    let metadata: Metadata?
     
-    let cuisine: String?
-    let contactInfo: ContactInfo?
-//    let location: Location
-    let details: RestaurantDetails?
-    let options: RestaurantOptions?
-    let reviews: [Review]?
+    enum CodingKeys: String, CodingKey {
+        case name
+        case rating
+        case totalRatings = "total_ratings"
+        case lat = "lat"
+        case long = "long"
+        case metadata
+    }
+    
+    
+    
+//    let cuisine: String?
+//    let contactInfo: ContactInfo?
+////    let location: Location
+//    let details: RestaurantDetails?
+//    let options: RestaurantOptions?
+//    let reviews: [Review]?
+}
+
+struct Metadata: Codable {
+    let servesLunch: Bool?
+    let curbsidePickup: Bool?
+    let servesVegetarian: Bool?
+    let placeID: String?
+    let website: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case servesLunch = "serves_lunch"
+        case curbsidePickup = "curbside_pickup"
+        case servesVegetarian = "serves_vegetarian"
+        case placeID = "place_id"
+        case website
+
+    }
 }
 
 struct ContactInfo: Codable {
