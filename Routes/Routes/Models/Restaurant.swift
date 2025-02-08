@@ -19,7 +19,7 @@ struct Restaurant: Codable, Identifiable {
     let lat: Double
     let long: Double
     let metadata: Metadata?
-    
+    let numberPplCommitted: Int?
     enum CodingKeys: String, CodingKey {
         case name
         case rating
@@ -27,6 +27,7 @@ struct Restaurant: Codable, Identifiable {
         case lat = "lat"
         case long = "long"
         case metadata
+        case numberPplCommitted = "number_ppl_committed"
     }
     
     
